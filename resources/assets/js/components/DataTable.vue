@@ -1,21 +1,28 @@
 <template>
   <div class="panel panel-default">
-      <div class="panel-heading">Name of Table</div>
+      <div class="panel-heading">{{ response.table }}</div>
 
       <div class="panel-body">
-        <table class="table->responsive">
-          <thead>
-            <tr>
-              <th>Column</th>
-            </tr>
-          </thead>
+        <div class="table-responsive">
+          <table class="table table-stripe">
+            <thead>
+              <tr>
+                <th v-for="column in response.displayable">
+                  {{ column }}
+                </th>
 
-          <tbody>
-            <tr>
-              <td>Value</td>
-            </tr>
-          </tbody>
-        </table>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="record in response.records">
+                <td v-for="columnValue, column in record">{{ columnValue }}</td>
+                <td>Edit</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
   </div>
 </template>
@@ -29,6 +36,7 @@
         data () {
           return {
             response: {
+              table: '',
               displayable: [],
               records: []
             }
