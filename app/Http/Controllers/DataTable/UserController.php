@@ -12,5 +12,4 @@ class UserController extends DataTableController
     {
       return User::query();
     }
-
 }
