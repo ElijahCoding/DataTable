@@ -172,7 +172,12 @@
           },
 
           update () {
-            console.log(this.editing.form);
+            axios.patch(`${this.endpoint}/${this.editing.id}`, this.editing.form).then((response) => {
+              this.getRecords().then(() => {
+                this.editing.id = null
+                this.editing.form = {}
+              })
+            })
           }
         }
     }

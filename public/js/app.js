@@ -43771,7 +43771,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.response.updatable.includes(column);
     },
     update: function update() {
-      console.log(this.editing.form);
+      var _this3 = this;
+
+      axios.patch(this.endpoint + '/' + this.editing.id, this.editing.form).then(function (response) {
+        _this3.getRecords().then(function () {
+          _this3.editing.id = null;
+          _this3.editing.form = {};
+        });
+      });
     }
   }
 });
