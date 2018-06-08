@@ -8,7 +8,7 @@
             <thead>
               <tr>
                 <th v-for="column in response.displayable">
-                  {{ column }}
+                  <span  @click="sortBy(column)">{{ column }}</span>
                 </th>
 
                 <th>&nbsp;</th>
@@ -16,7 +16,7 @@
             </thead>
 
             <tbody>
-              <tr v-for="record in response.records">
+              <tr v-for="record in filteredRecords">
                 <td v-for="columnValue, column in record">{{ columnValue }}</td>
                 <td>Edit</td>
               </tr>
@@ -39,6 +39,11 @@
               table: '',
               displayable: [],
               records: []
+            },
+
+            sort: {
+              key: 'id',
+              order: 'asc'
             }
           }
         },
@@ -47,11 +52,37 @@
           this.getRecords()
         },
 
+        computed: {
+          filteredRecords () {
+            let data = this.response.records
+
+            if (this.sort.key) {
+
+              data = _.orderBy(data, (i) => {
+                let value = i[this.sort.key]
+                
+                if (!isNaN(parseFloat(value))) {
+                  return parseFloat(value)
+                }
+
+                return String(i[this.sort.key]).toLowerCase()
+              }, this.sort.order)
+            }
+
+            return data
+          }
+        },
+
         methods: {
           getRecords () {
             return axios.get(`${this.endpoint}`).then((response) => {
               this.response = response.data.data
             })
+          },
+
+          sortBy (column) {
+            this.sort.key = column
+            this.sort.order = this.sort.order === 'asc' ? 'desc' : 'asc'
           }
         }
     }

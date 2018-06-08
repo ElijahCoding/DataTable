@@ -43269,6 +43269,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         table: '',
         displayable: [],
         records: []
+      },
+
+      sort: {
+        key: 'id',
+        order: 'asc'
       }
     };
   },
@@ -43277,13 +43282,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
 
-  methods: {
-    getRecords: function getRecords() {
+  computed: {
+    filteredRecords: function filteredRecords() {
       var _this = this;
 
+      var data = this.response.records;
+
+      if (this.sort.key) {
+
+        data = _.orderBy(data, function (i) {
+          var value = i[_this.sort.key];
+
+          if (!isNaN(parseFloat(value))) {
+            return parseFloat(value);
+          }
+
+          return String(i[_this.sort.key]).toLowerCase();
+        }, this.sort.order);
+      }
+
+      return data;
+    }
+  },
+
+  methods: {
+    getRecords: function getRecords() {
+      var _this2 = this;
+
       return axios.get('' + this.endpoint).then(function (response) {
-        _this.response = response.data.data;
+        _this2.response = response.data.data;
       });
+    },
+    sortBy: function sortBy(column) {
+      this.sort.key = column;
+      this.sort.order = this.sort.order === 'asc' ? 'desc' : 'asc';
     }
   }
 });
@@ -43310,8 +43342,16 @@ var render = function() {
               [
                 _vm._l(_vm.response.displayable, function(column) {
                   return _c("th", [
-                    _vm._v(
-                      "\n                " + _vm._s(column) + "\n              "
+                    _c(
+                      "span",
+                      {
+                        on: {
+                          click: function($event) {
+                            _vm.sortBy(column)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(column))]
                     )
                   ])
                 }),
@@ -43324,7 +43364,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "tbody",
-            _vm._l(_vm.response.records, function(record) {
+            _vm._l(_vm.filteredRecords, function(record) {
               return _c(
                 "tr",
                 [
