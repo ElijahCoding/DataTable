@@ -9,6 +9,13 @@
               <tr>
                 <th v-for="column in response.displayable">
                   <span  @click="sortBy(column)">{{ column }}</span>
+
+                  <span
+                  v-if="sort.key === column"
+                  class="arrow"
+                  :class="{ 'arrow--asc': sort.order === 'asc', 'arrow--desc': sort.order === 'desc' }"
+                  >
+                  </span>
                 </th>
 
                 <th>&nbsp;</th>
