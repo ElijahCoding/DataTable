@@ -25,13 +25,13 @@ abstract class DataTableController extends Controller
       $this->builder = $builder;
     }
 
-    public function index()
+    public function index(Request $request)
     {
       return response()->json([
         'data' => [
           'table' => $this->builder->getModel()->getTable(),
           'displayable' => array_values($this->getDisplayableColumns()),
-          'records' => $this->getRecords()
+          'records' => $this->getRecords($request)
         ]
       ]);
     }
@@ -49,8 +49,8 @@ abstract class DataTableController extends Controller
       return Schema::getColumnListing($this->builder->getModel()->getTable());
     }
 
-    protected function getRecords()
+    protected function getRecords(Request $request)
     {
-      return $this->builder->get($this->getDisplayableColumns());
+      return $this->builder->limit($request->limit)->get($this->getDisplayableColumns());
     }
 }
