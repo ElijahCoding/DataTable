@@ -60,7 +60,7 @@
 
               data = _.orderBy(data, (i) => {
                 let value = i[this.sort.key]
-                
+
                 if (!isNaN(parseFloat(value))) {
                   return parseFloat(value)
                 }
@@ -87,3 +87,38 @@
         }
     }
 </script>
+
+<style lang="scss">
+    .sortable {
+        cursor: pointer;
+    }
+
+    .match {
+        color: #4fc08d;
+    }
+
+    .well {
+        border-radius: 0;
+    }
+
+    .arrow {
+        display: inline-block;
+        vertical-align: middle;
+        width: 0;
+        height: 0;
+        margin-left: 5px;
+        opacity: 0.66;
+
+        &--asc {
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 4px solid #222;
+        }
+
+        &--desc {
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid #222;
+        }
+    }
+</style>
