@@ -46,15 +46,14 @@
             </thead>
 
             <tbody>
+
               <tr v-for="record in filteredRecords">
                 <td v-for="columnValue, column in record">
                   <template v-if="editing.id === record.id && isUpdatable(column)">
                     <div class="form-group">
-                      <input type="text"
-                      class="form-control"
-                      :value="columnValue"
-                      v-model="editing.form[column]"
-                      >
+
+                      <input type="text" value="columnValue" class="form-control" v-model="editing.form[column]">
+
                     </div>
                   </template>
 
@@ -67,6 +66,7 @@
                   <a href="#" @click.prevent="edit(record)" v-if="editing.id !== record.id">Edit</a>
 
                   <template v-if="editing.id === record.id">
+                    <a href="#" @click.prevent="update">Save</a><br>
                     <a href="#" @click.prevent="editing.id = null">Cancel</a>
                   </template>
                 </td>
@@ -105,9 +105,9 @@
 
             editing: {
               id: null,
-              form: { },
+              form: {},
               errors: []
-            }
+            },
           }
         },
 
@@ -169,6 +169,10 @@
 
           isUpdatable (column) {
             return this.response.updatable.includes(column)
+          },
+
+          update () {
+            console.log(this.editing.form);
           }
         }
     }
