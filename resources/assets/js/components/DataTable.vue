@@ -3,6 +3,23 @@
       <div class="panel-heading">{{ response.table }}</div>
 
       <div class="panel-body">
+
+        <div class="row">
+          <div class="form-group col-md-10">
+            <label for="filter">Quick search current results</label>
+            <input
+            type="text"
+            id="filter"
+            class="form-control"
+            v-model="quickSearchQuery"
+            >
+          </div>
+
+          <div class="form-group col-md-2">
+            {{ quickSearchQuery }}
+          </div>
+        </div>
+
         <div class="table-responsive">
           <table class="table table-stripe">
             <thead>
@@ -51,7 +68,9 @@
             sort: {
               key: 'id',
               order: 'asc'
-            }
+            },
+
+            quickSearchQuery: ''
           }
         },
 
@@ -63,8 +82,14 @@
           filteredRecords () {
             let data = this.response.records
 
-            if (this.sort.key) {
+            data = data.filter((row) => {
 
+              return Object.keys(row).some((key) => {
+                return String(row[key]).toLowerCase().indexOf(this.quickSearchQuery.toLowerCase()) > -1
+              })
+            })
+
+            if (this.sort.key) {
               data = _.orderBy(data, (i) => {
                 let value = i[this.sort.key]
 

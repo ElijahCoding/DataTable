@@ -43351,6 +43351,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['endpoint'],
@@ -43366,7 +43383,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       sort: {
         key: 'id',
         order: 'asc'
-      }
+      },
+
+      quickSearchQuery: ''
     };
   },
   mounted: function mounted() {
@@ -43380,8 +43399,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       var data = this.response.records;
 
-      if (this.sort.key) {
+      data = data.filter(function (row) {
 
+        return Object.keys(row).some(function (key) {
+          return String(row[key]).toLowerCase().indexOf(_this.quickSearchQuery.toLowerCase()) > -1;
+        });
+      });
+
+      if (this.sort.key) {
         data = _.orderBy(data, function (i) {
           var value = i[_this.sort.key];
 
@@ -43426,6 +43451,40 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "panel-body" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "form-group col-md-10" }, [
+          _c("label", { attrs: { for: "filter" } }, [
+            _vm._v("Quick search current results")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.quickSearchQuery,
+                expression: "quickSearchQuery"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", id: "filter" },
+            domProps: { value: _vm.quickSearchQuery },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.quickSearchQuery = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group col-md-2" }, [
+          _vm._v("\n          " + _vm._s(_vm.quickSearchQuery) + "\n        ")
+        ])
+      ]),
+      _vm._v(" "),
       _c("div", { staticClass: "table-responsive" }, [
         _c("table", { staticClass: "table table-stripe" }, [
           _c("thead", [
