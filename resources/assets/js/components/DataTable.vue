@@ -3,7 +3,7 @@
       <div class="panel-heading">{{ response.table }}</div>
 
       <div class="panel-body">
-        {{ search }}
+
         <form action="#" @submit.prevent="getRecords">
           <label for="search">Search</label>
           <div class="row row-fluid">
