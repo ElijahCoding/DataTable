@@ -43680,6 +43680,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -43778,6 +43780,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           _this3.editing.id = null;
           _this3.editing.form = {};
         });
+      }).catch(function (error) {
+        if (error.response.status === 422) {
+          _this3.editing.errors = error.response.data;
+        }
       });
     }
   }
@@ -43924,33 +43930,63 @@ var render = function() {
                       [
                         _vm.editing.id === record.id && _vm.isUpdatable(column)
                           ? [
-                              _c("div", { staticClass: "form-group" }, [
-                                _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: _vm.editing.form[column],
-                                      expression: "editing.form[column]"
-                                    }
-                                  ],
-                                  staticClass: "form-control",
-                                  attrs: { type: "text", value: "columnValue" },
-                                  domProps: { value: _vm.editing.form[column] },
-                                  on: {
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(
-                                        _vm.editing.form,
-                                        column,
-                                        $event.target.value
-                                      )
-                                    }
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "form-group",
+                                  class: {
+                                    "has-error": _vm.editing.errors[column]
                                   }
-                                })
-                              ])
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.editing.form[column],
+                                        expression: "editing.form[column]"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: {
+                                      type: "text",
+                                      value: "columnValue"
+                                    },
+                                    domProps: {
+                                      value: _vm.editing.form[column]
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.editing.form,
+                                          column,
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _vm.editing.errors[column]
+                                    ? _c(
+                                        "span",
+                                        { staticClass: "help-block" },
+                                        [
+                                          _c("strong", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.editing.errors[column][0]
+                                              )
+                                            )
+                                          ])
+                                        ]
+                                      )
+                                    : _vm._e()
+                                ]
+                              )
                             ]
                           : [
                               _vm._v(
