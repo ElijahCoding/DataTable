@@ -48,6 +48,15 @@ abstract class DataTableController extends Controller
       $this->builder->find($id)->update($request->only($this->getUpdatableColumns()));
     }
 
+    public function store(Request $request)
+    {
+      if (!$this->allowCreation) {
+        return;
+      }
+
+      $this->builder->create($request->only($this->getUpdatableColumns()));
+    }
+
     public function getDisplayableColumns()
     {
       return array_diff(
