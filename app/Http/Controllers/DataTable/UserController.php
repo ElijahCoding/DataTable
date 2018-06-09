@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 
 class UserController extends DataTableController
 {
+    protected $allowCreation = false;
+
     public function builder()
     {
       return User::query();

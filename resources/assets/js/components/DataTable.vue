@@ -1,8 +1,41 @@
 <template>
   <div class="panel panel-default">
-      <div class="panel-heading">{{ response.table }}</div>
+      <div class="panel-heading">
+        {{ response.table }}
+        <a
+        href="#"
+        class="pull-right"
+        v-if="response.allow.creation"
+        @click.prevent="creating.active = !creating.active"
+        >
+          {{ creating.active ? 'Cancel' : 'New record' }}
+        </a>
+      </div>
 
       <div class="panel-body">
+
+        <div class="well" v-if="creating.active">
+
+          <form method="post" class="form-horizontal" @submit.prevent="store">
+            <div class="form-group" v-for="column in response.updatable">
+              <label class="col-md-3 control-label" :for="column">{{ column }}</label>
+              <div class="col-md-6">
+                <input
+                type="text"
+                :id="column"
+                class="form-control"
+                v-model="creating.form[column]">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-6 col-md-offset-3">
+                <button type="submit" class="btn btn-default">Create</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
 
         <form action="#" @submit.prevent="getRecords">
           <label for="search">Search</label>
@@ -127,7 +160,8 @@
             response: {
               table: '',
               displayable: [],
-              records: []
+              records: [],
+              allow: {}
             },
 
             sort: {
@@ -149,6 +183,12 @@
               value: '',
               operator: 'equals',
               column: 'id'
+            },
+
+            creating: {
+              active: false,
+              form: {},
+              errors: []
             }
           }
         },
@@ -225,6 +265,10 @@
                 this.editing.errors = error.response.data
               }
             })
+          },
+
+          store () {
+
           }
         }
     }

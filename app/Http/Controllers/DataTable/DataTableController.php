@@ -11,6 +11,8 @@ use Illuminate\Database\QueryException;
 
 abstract class DataTableController extends Controller
 {
+    protected $allowCreation = true;
+
     protected $builder;
 
     abstract public function builder();
@@ -33,7 +35,10 @@ abstract class DataTableController extends Controller
           'table' => $this->builder->getModel()->getTable(),
           'displayable' => array_values($this->getDisplayableColumns()),
           'updatable' => array_values($this->getUpdatableColumns()),
-          'records' => $this->getRecords($request)
+          'records' => $this->getRecords($request),
+          'allow' => [
+            'creation' => $this->allowCreation
+          ]
         ]
       ]);
     }
