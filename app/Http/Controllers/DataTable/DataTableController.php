@@ -104,10 +104,30 @@ abstract class DataTableController extends Controller
           'operator' => 'LIKE',
           'value' => "%{$value}%"
         ],
-        'equals' => [
-          'operator' => '=',
-          'value' => $value
-        ]
+        'starts_with' => [
+            'operator' => 'LIKE',
+            'value' => "{$value}%"
+        ],
+        'ends_with' => [
+            'operator' => 'LIKE',
+            'value' => "%{$value}"
+        ],
+        'greater_than' => [
+            'operator' => '>',
+            'value' => $value
+        ],
+        'less_than' => [
+            'operator' => '<',
+            'value' => $value
+        ],
+        'greater_than_or_equal_to' => [
+            'operator' => '>=',
+            'value' => $value
+        ],
+        'less_than_or_equal_to' => [
+            'operator' => '<=',
+            'value' => $value
+        ],
       ], $operator);
     }
 }
