@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\QueryException;
 
 abstract class DataTableController extends Controller
 {
@@ -73,7 +74,11 @@ abstract class DataTableController extends Controller
         $builder = $this->buildSearch($builder, $request);
       }
 
-      return $this->builder->limit($request->limit)->orderBy('id', 'asc')->get($this->getDisplayableColumns());
+      try {
+        return $this->builder->limit($request->limit)->orderBy('id', 'asc')->get($this->getDisplayableColumns());
+      } catch (QueryException $e) {
+        return [];
+      }
     }
 
     protected function hasSearchQuery(Request $request)
@@ -91,6 +96,14 @@ abstract class DataTableController extends Controller
     protected function resolveQueryParts($operator, $value)
     {
       return array_get([
+        'equals' => [
+          'operator' => '=',
+          'value' => $value
+        ],
+        'contains' => [
+          'operator' => 'LIKE',
+          'value' => "%{$value}%"
+        ],
         'equals' => [
           'operator' => '=',
           'value' => $value
