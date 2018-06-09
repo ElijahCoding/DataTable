@@ -17,7 +17,7 @@
         <div class="well" v-if="creating.active">
 
           <form method="post" class="form-horizontal" @submit.prevent="store">
-            <div class="form-group" v-for="column in response.updatable">
+            <div class="form-group" v-for="column in response.updatable" :class="{ 'has-error': creating.errors[column] }">
               <label class="col-md-3 control-label" :for="column">{{ column }}</label>
               <div class="col-md-6">
                 <input
@@ -25,6 +25,9 @@
                 :id="column"
                 class="form-control"
                 v-model="creating.form[column]">
+                <span class="help-block" v-if="creating.errors[column]">
+                  <strong>{{ creating.errors[column][0] }}</strong>
+                </span>
               </div>
             </div>
 
@@ -268,8 +271,18 @@
           },
 
           store () {
-
-          }
+                axios.post(`${this.endpoint}`, this.creating.form).then(() => {
+                    this.getRecords().then(() => {
+                        this.creating.active = false
+                        this.creating.form = {}
+                        this.creating.errors = []
+                    })
+                }).catch((error) => {
+                    if (error.response.status === 422) {
+                        this.creating.errors = error.response.data
+                    }
+                })
+            },
         }
     }
 </script>
