@@ -112,6 +112,7 @@
                 </th>
 
                 <th>&nbsp;</th>
+                <th>&nbsp;</th>
               </tr>
             </thead>
 
@@ -141,6 +142,9 @@
                     <a href="#" @click.prevent="update">Save</a><br>
                     <a href="#" @click.prevent="editing.id = null">Cancel</a>
                   </template>
+                </td>
+                <td>
+                  <a href="#" @click.prevent="destroy(record.id)">Delete</a>
                 </td>
               </tr>
             </tbody>
@@ -283,6 +287,12 @@
                     }
                 })
             },
+
+            destroy (record) {
+              axios.delete(`${this.endpoint}/${record}`).then((response) => {
+                this.getRecords()
+              })
+            }
         }
     }
 </script>

@@ -58,6 +58,11 @@ abstract class DataTableController extends Controller
       $this->builder->create($request->only($this->getUpdatableColumns()));
     }
 
+    public function destroy($id, Request $request)
+    {
+      $this->builder->find($id)->delete();
+    }
+
     public function getDisplayableColumns()
     {
       return array_diff(

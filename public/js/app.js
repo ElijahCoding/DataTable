@@ -43754,6 +43754,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -43884,6 +43888,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         if (error.response.status === 422) {
           _this4.creating.errors = error.response.data;
         }
+      });
+    },
+    destroy: function destroy(record) {
+      var _this5 = this;
+
+      axios.delete(this.endpoint + '/' + record).then(function (response) {
+        _this5.getRecords();
       });
     }
   }
@@ -44609,6 +44620,8 @@ var render = function() {
                   ])
                 }),
                 _vm._v(" "),
+                _c("th", [_vm._v(" ")]),
+                _vm._v(" "),
                 _c("th", [_vm._v(" ")])
               ],
               2
@@ -44750,7 +44763,23 @@ var render = function() {
                         : _vm._e()
                     ],
                     2
-                  )
+                  ),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.destroy(record.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ])
                 ],
                 2
               )
