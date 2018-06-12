@@ -10,6 +10,8 @@ class UserController extends DataTableController
 {
     protected $allowCreation = true;
 
+    protected $allowDeletion = true;
+
     public function builder()
     {
       return User::query();

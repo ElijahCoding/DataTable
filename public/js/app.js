@@ -43893,6 +43893,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     destroy: function destroy(record) {
       var _this5 = this;
 
+      if (!window.confirm('Are you sure you want to delete this?')) {
+        return;
+      }
+
       axios.delete(this.endpoint + '/' + record).then(function (response) {
         _this5.getRecords();
       });
@@ -44766,19 +44770,21 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("td", [
-                    _c(
-                      "a",
-                      {
-                        attrs: { href: "#" },
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            _vm.destroy(record.id)
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
-                    )
+                    _vm.response.allow.deletion
+                      ? _c(
+                          "a",
+                          {
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.destroy(record.id)
+                              }
+                            }
+                          },
+                          [_vm._v("Delete")]
+                        )
+                      : _vm._e()
                   ])
                 ],
                 2

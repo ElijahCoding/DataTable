@@ -144,7 +144,7 @@
                   </template>
                 </td>
                 <td>
-                  <a href="#" @click.prevent="destroy(record.id)">Delete</a>
+                  <a href="#" @click.prevent="destroy(record.id)" v-if="response.allow.deletion">Delete</a>
                 </td>
               </tr>
             </tbody>
@@ -289,6 +289,10 @@
             },
 
             destroy (record) {
+              if (!window.confirm(`Are you sure you want to delete this?`)) {
+                return
+              }
+
               axios.delete(`${this.endpoint}/${record}`).then((response) => {
                 this.getRecords()
               })
