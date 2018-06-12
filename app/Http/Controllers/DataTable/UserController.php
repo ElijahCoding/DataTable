@@ -8,11 +8,19 @@ use App\Http\Controllers\Controller;
 
 class UserController extends DataTableController
 {
-    protected $allowCreation = false;
+    protected $allowCreation = true;
 
     public function builder()
     {
       return User::query();
+    }
+
+    public function getCustomColumnNames()
+    {
+      return [
+        'name' => 'Full name',
+        'email' => 'Email address'
+      ];
     }
 
     public function getDisplayableColumns()

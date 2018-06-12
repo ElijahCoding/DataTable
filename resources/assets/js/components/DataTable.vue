@@ -18,7 +18,7 @@
 
           <form method="post" class="form-horizontal" @submit.prevent="store">
             <div class="form-group" v-for="column in response.updatable" :class="{ 'has-error': creating.errors[column] }">
-              <label class="col-md-3 control-label" :for="column">{{ column }}</label>
+              <label class="col-md-3 control-label" :for="column">{{ response.custom_columns[column] || column }}</label>
               <div class="col-md-6">
                 <input
                 type="text"
@@ -101,7 +101,7 @@
             <thead>
               <tr>
                 <th v-for="column in response.displayable">
-                  <span  @click="sortBy(column)">{{ column }}</span>
+                  <span  @click="sortBy(column)">{{ response.custom_columns[column] || column }}</span>
 
                   <span
                   v-if="sort.key === column"
